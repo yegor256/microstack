@@ -104,6 +104,8 @@ fn push_one() {
 #[test]
 fn pop_none() {
     let mut s: Stack<u64, 1> = Stack::new();
+    assert_eq!(0, s.len());
+    assert!(s.is_empty());
     assert!(s.pop().is_none());
 }
 
