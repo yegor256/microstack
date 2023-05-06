@@ -63,8 +63,8 @@ use std::mem::MaybeUninit;
 /// ```
 ///
 pub struct Stack<V, const N: usize> {
-    /// The next available pair in the array.
+    /// The next available position in the array.
     next: usize,
-    /// The fixed-size array of key-value pairs.
+    /// The fixed-size array of values.
     items: [MaybeUninit<V>; N],
 }
