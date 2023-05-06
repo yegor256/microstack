@@ -22,7 +22,8 @@ use microstack::Stack;
 let mut s : Stack<&str, 10> = Stack::new(); // allocation on stack
 s.push("foo");
 s.push("bar");
-assert_eq!(2, s.len());
+assert_eq!("bar", *s.pop().unwrap());
+assert_eq!(1, s.len());
 ```
 
 Pay attention, here the stack is created with an extra generic argument `10`. This is 
