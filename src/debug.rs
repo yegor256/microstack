@@ -34,7 +34,7 @@ impl<V: Display, const N: usize> Debug for Stack<V, N> {
         for v in self.iter() {
             parts.push(format!("{v}"));
         }
-        f.write_str(format!("{{{}}}", parts.join(", ").as_str()).as_str())
+        f.write_str(format!("[{}]", parts.join(", ").as_str()).as_str())
     }
 }
 
@@ -43,7 +43,7 @@ fn debugs_stack() {
     let mut s: Stack<&str, 10> = Stack::new();
     s.push("one");
     s.push("two");
-    assert_eq!("{one, two}", format!("{:?}", s));
+    assert_eq!("[one, two]", format!("{:?}", s));
 }
 
 #[test]
@@ -51,5 +51,5 @@ fn displays_stack() {
     let mut s: Stack<&str, 10> = Stack::new();
     s.push("one");
     s.push("two");
-    assert_eq!("{one, two}", format!("{}", s));
+    assert_eq!("[one, two]", format!("{}", s));
 }
