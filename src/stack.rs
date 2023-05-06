@@ -83,7 +83,7 @@ impl<V, const N: usize> Stack<V, N> {
     }
 }
 
-impl<V: Clone + 'static, const N: usize> Stack<V, N> {
+impl<'a, V: Clone + 'a, const N: usize> Stack<V, N> {
     /// Into-iterate them.
     #[inline]
     pub fn into_iter(&self) -> impl Iterator<Item = V> + '_ {
