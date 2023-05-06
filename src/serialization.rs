@@ -19,16 +19,16 @@
 // SOFTWARE.
 
 use crate::Stack;
-use serde::de::{StackAccess, Visitor};
-use serde::ser::SerializeStack;
+use serde::de::{SeqAccess, Visitor};
+use serde::ser::SerializeSeq;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::fmt::Formatter;
 use std::marker::PhantomData;
 
 impl<V: Serialize + Clone, const N: usize> Serialize for Stack<V, N> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut map = serializer.serialize_seq(Some(self.next))?;
         for v in self.iter() {
@@ -48,8 +48,8 @@ impl<'de, V: Clone + Deserialize<'de>, const N: usize> Visitor<'de> for Vi<V, N>
     }
 
     fn visit_seq<A>(self, mut access: A) -> Result<Self::Value, A::Error>
-        where
-            A: SeqAccess<'de>,
+    where
+        A: SeqAccess<'de>,
     {
         let mut p: Self::Value = Stack::new();
         while let Some(v) = access.next_element()? {
@@ -59,12 +59,10 @@ impl<'de, V: Clone + Deserialize<'de>, const N: usize> Visitor<'de> for Vi<V, N>
     }
 }
 
-impl<'de, V: Clone + Deserialize<'de>, const N: usize> Deserialize<'de>
-for Stack<V, N>
-{
+impl<'de, V: Clone + Deserialize<'de>, const N: usize> Deserialize<'de> for Stack<V, N> {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where
-            D: Deserializer<'de>,
+    where
+        D: Deserializer<'de>,
     {
         deserializer.deserialize_seq(Vi(PhantomData))
     }
@@ -72,9 +70,6 @@ for Stack<V, N>
 
 #[cfg(test)]
 use bincode::{deserialize, serialize};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use serde::de::{SeqAccess, Visitor};
-use serde::ser::SerializeSeq;
 
 #[test]
 fn serialize_and_deserialize() {
@@ -84,4 +79,3 @@ fn serialize_and_deserialize() {
     let after: Stack<u8, 8> = deserialize(&bytes).unwrap();
     assert_eq!(42, *after.iter().next().unwrap());
 }
-

@@ -20,7 +20,7 @@
 
 use crate::Stack;
 
-impl<V : Clone, const N: usize> Clone for Stack<V, N> {
+impl<V: Clone, const N: usize> Clone for Stack<V, N> {
     /// Clone it.
     fn clone(&self) -> Self {
         let mut s: Self = Self::new();

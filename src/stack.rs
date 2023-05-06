@@ -23,6 +23,7 @@ use crate::Stack;
 impl<V, const N: usize> Stack<V, N> {
     /// Make it from vector.
     #[inline]
+    #[must_use]
     pub fn from_vec(v: Vec<V>) -> Self {
         let mut p = Self::new();
         for i in v {
@@ -68,8 +69,11 @@ impl<V, const N: usize> Stack<V, N> {
 
     /// Iterate them.
     #[inline]
-    pub fn iter(&self) -> impl Iterator<Item=&V> {
-        self.items.iter().take(self.next).map(|mu| unsafe { mu.assume_init_ref() })
+    pub fn iter(&self) -> impl Iterator<Item = &V> {
+        self.items
+            .iter()
+            .take(self.next)
+            .map(|mu| unsafe { mu.assume_init_ref() })
     }
 }
 
@@ -82,7 +86,7 @@ fn push_and_pop() {
 
 #[test]
 fn push_and_iterate() {
-    let mut p : Stack<u64, 16> = Stack::new();
+    let mut p: Stack<u64, 16> = Stack::new();
     p.push(1);
     p.push(2);
     p.push(3);
@@ -95,7 +99,7 @@ fn push_and_iterate() {
 
 #[test]
 fn push_clear_and_iterate() {
-    let mut p : Stack<u64, 16> = Stack::new();
+    let mut p: Stack<u64, 16> = Stack::new();
     p.push(1);
     p.push(2);
     p.push(3);

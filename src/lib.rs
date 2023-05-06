@@ -44,9 +44,9 @@
 mod clone;
 mod ctors;
 mod debug;
-mod stack;
 #[cfg(feature = "serde")]
 mod serialization;
+mod stack;
 
 use std::mem::MaybeUninit;
 
