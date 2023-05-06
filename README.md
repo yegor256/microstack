@@ -7,7 +7,7 @@
 [![docs.rs](https://img.shields.io/docsrs/microstack)](https://docs.rs/microstack/latest/microstack/)
 
 This is the simplest and the fastest implementation of a 
-[stack data structure](https://en.wikipedia.org/wiki/Stack_(%28abstract_data_type%29), 
+[stack data structure](https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29), 
 on [stack](https://en.wikipedia.org/wiki/Call_stack). 
 
 First, add this to `Cargo.toml`:
