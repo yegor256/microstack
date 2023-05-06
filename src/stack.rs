@@ -83,6 +83,17 @@ impl<V, const N: usize> Stack<V, N> {
     }
 }
 
+impl<V: Clone + 'static, const N: usize> Stack<V, N> {
+    /// Into-iterate them.
+    #[inline]
+    pub fn into_iter(&self) -> impl Iterator<Item = V> + '_ {
+        self.items
+            .iter()
+            .take(self.next)
+            .map(|mu| unsafe { mu.assume_init_read() })
+    }
+}
+
 #[test]
 fn push_one() {
     let mut s: Stack<u64, 1> = Stack::new();
@@ -116,6 +127,18 @@ fn push_and_iterate() {
         sum += x;
     }
     assert_eq!(6, sum);
+}
+
+#[test]
+fn push_and_into_iterate() {
+    let mut p: Stack<u64, 16> = Stack::new();
+    p.push(1);
+    p.push(2);
+    let mut sum = 0;
+    for x in p.into_iter() {
+        sum += x;
+    }
+    assert_eq!(3, sum);
 }
 
 #[test]
