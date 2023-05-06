@@ -28,10 +28,11 @@
 //! s.push(1);
 //! s.push(2);
 //! assert_eq!(2, *s.pop().unwrap());
+//! assert_eq!(1, s.len());
 //! ```
 //!
 //! Creating a [`Stack`] requires knowing the maximum size of it, upfront. This is
-//! what the third type argument `10` is for, in the example above. The stack
+//! what the second type argument `10` is for, in the example above. The stack
 //! will have exactly ten elements. An attempt to add an 11th element will lead
 //! to a panic.
 
