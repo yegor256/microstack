@@ -102,6 +102,12 @@ fn push_one() {
 }
 
 #[test]
+fn pop_none() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    assert!(s.pop().is_none());
+}
+
+#[test]
 #[should_panic]
 fn push_out_of_boundary() {
     let mut s: Stack<u64, 1> = Stack::new();
