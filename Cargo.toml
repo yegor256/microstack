@@ -1,0 +1,17 @@
+[package]
+name = "microstack"
+version = "0.0.0"
+edition = "2021"
+repository = "https://github.com/yegor256/microstack"
+description = "The simplest and the fastest implementation of a fixed-size stack on stack"
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/yegor256/microstack"
+keywords = ["memory", "stack"]
+categories = ["data-structures", "memory-management"]
+
+[dependencies]
+serde = { version = "1.0.160", optional = true, default-features = false }
+
+[dev-dependencies]
+bincode = "1.3.3"
