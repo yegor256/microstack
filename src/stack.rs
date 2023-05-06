@@ -32,6 +32,12 @@ impl<V, const N: usize> Stack<V, N> {
         p
     }
 
+    /// Get the capacity.
+    #[inline]
+    pub fn capacity(&mut self) -> usize {
+        N
+    }
+
     /// Push new element into it.
     #[inline]
     pub fn push(&mut self, v: V) {
@@ -75,6 +81,21 @@ impl<V, const N: usize> Stack<V, N> {
             .take(self.next)
             .map(|mu| unsafe { mu.assume_init_ref() })
     }
+}
+
+#[test]
+fn push_one() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    s.push(42);
+    assert_eq!(42, *s.pop().unwrap());
+}
+
+#[test]
+#[should_panic]
+fn push_out_of_boundary() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    s.push(42);
+    s.push(42);
 }
 
 #[test]

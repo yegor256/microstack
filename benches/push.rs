@@ -25,34 +25,27 @@ use microstack::Stack;
 use test::Bencher;
 
 #[bench]
-fn insert_same(b: &mut Bencher) {
-    let mut m: Stack<u64, u64, 64> = Stack::new();
+fn push_different(b: &mut Bencher) {
+    let mut s: Stack<usize, 64> = Stack::new();
     b.iter(|| {
-        for i in 0..1000 {
-            m.insert(8, i);
+        let cap = s.capacity();
+        for i in 0..cap {
+            s.push(i);
+        }
+        for i in 0..cap {
+            s.pop();
         }
     });
 }
 
 #[bench]
-fn insert_different(b: &mut Bencher) {
-    let mut m: Stack<usize, u64, 64> = Stack::new();
+fn push_and_pop(b: &mut Bencher) {
+    let mut s: Stack<usize, 64> = Stack::new();
     b.iter(|| {
-        let cap = m.capacity();
+        let cap = s.capacity();
         for i in 0..cap {
-            m.insert(i, 256);
-        }
-    });
-}
-
-#[bench]
-fn insert_and_remove(b: &mut Bencher) {
-    let mut m: Stack<usize, u64, 64> = Stack::new();
-    b.iter(|| {
-        let cap = m.capacity();
-        for i in 0..cap {
-            m.insert(i, 256);
-            m.remove(&i);
+            s.push(i);
+            s.pop();
         }
     });
 }
