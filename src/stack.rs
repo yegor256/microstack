@@ -47,14 +47,33 @@ impl<V: Copy, const N: usize> Stack<V, N> {
         self.next += 1;
     }
 
+    /// Push new element into it.
+    ///
+    /// # Panics
+    ///
+    /// If there is no more space in the stack, it will panic.
+    #[inline]
+    pub fn try_push(&mut self, v: V) {
+        assert!(self.next < N, "No more space left in the stack");
+        self.push(v);
+    }
+
     /// Pop a element from it.
     #[inline]
-    pub fn pop(&mut self) -> Option<V> {
+    pub fn pop(&mut self) -> V {
+        self.next -= 1;
+        unsafe { self.items.as_ptr().add(self.next).read() }
+    }
+
+    /// Pop a element from it.
+    ///
+    /// If there is no more elements left, it will return `None`.
+    #[inline]
+    pub fn try_pop(&mut self) -> Option<V> {
         if self.next == 0 {
             None
         } else {
-            self.next -= 1;
-            Some(unsafe { self.items.as_ptr().add(self.next).read() })
+            Some(self.pop())
         }
     }
 
@@ -81,7 +100,7 @@ impl<V: Copy, const N: usize> Stack<V, N> {
 fn push_one() {
     let mut s: Stack<u64, 1> = Stack::new();
     s.push(42);
-    assert_eq!(42, s.pop().unwrap());
+    assert_eq!(42, s.pop());
 }
 
 #[test]
@@ -89,12 +108,20 @@ fn pop_none() {
     let mut s: Stack<u64, 1> = Stack::new();
     assert_eq!(0, s.len());
     assert!(s.is_empty());
-    assert!(s.pop().is_none());
+    assert!(s.try_pop().is_none());
+}
+
+#[test]
+#[should_panic]
+fn panic_on_empty_stack() {
+    let mut s: Stack<u64, 0> = Stack::new();
+    assert_eq!(0, s.len());
+    s.try_push(11);
 }
 
 #[test]
 fn push_and_pop() {
     let mut s: Stack<u64, 16> = Stack::new();
     s.push(42);
-    assert_eq!(42, s.pop().unwrap());
+    assert_eq!(42, s.pop());
 }

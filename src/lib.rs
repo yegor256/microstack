@@ -28,7 +28,7 @@
 //! let mut s : Stack<u64, 10> = Stack::new();
 //! s.push(1);
 //! s.push(2);
-//! assert_eq!(2, s.pop().unwrap());
+//! assert_eq!(2, s.pop());
 //! assert_eq!(1, s.len());
 //! ```
 //!
@@ -61,7 +61,7 @@ mod stack;
 /// let mut s : Stack<u64, 10> = Stack::new();
 /// s.push(1);
 /// s.push(2);
-/// assert_eq!(2, s.pop().unwrap());
+/// assert_eq!(2, s.pop());
 /// ```
 ///
 pub struct Stack<V: Copy, const N: usize> {
