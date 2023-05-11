@@ -25,7 +25,7 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::fmt::Formatter;
 use std::marker::PhantomData;
 
-impl<V: Serialize + Clone + Copy, const N: usize> Serialize for Stack<V, N> {
+impl<V: Serialize + Copy, const N: usize> Serialize for Stack<V, N> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
@@ -40,7 +40,7 @@ impl<V: Serialize + Clone + Copy, const N: usize> Serialize for Stack<V, N> {
 
 struct Vi<V, const N: usize>(PhantomData<V>);
 
-impl<'de, V: Clone + Copy + Deserialize<'de>, const N: usize> Visitor<'de> for Vi<V, N> {
+impl<'de, V: Copy + Deserialize<'de>, const N: usize> Visitor<'de> for Vi<V, N> {
     type Value = Stack<V, N>;
 
     fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {
@@ -59,7 +59,7 @@ impl<'de, V: Clone + Copy + Deserialize<'de>, const N: usize> Visitor<'de> for V
     }
 }
 
-impl<'de, V: Clone + Copy + Deserialize<'de>, const N: usize> Deserialize<'de> for Stack<V, N> {
+impl<'de, V: Copy + Deserialize<'de>, const N: usize> Deserialize<'de> for Stack<V, N> {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
