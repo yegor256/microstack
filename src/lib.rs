@@ -70,3 +70,13 @@ pub struct Stack<V: Copy, const N: usize> {
     /// The fixed-size array of values.
     items: [V; N],
 }
+
+/// Into-iterator.
+pub struct IntoIter<V: Copy, const N: usize> {
+    /// The position.
+    pos: usize,
+    /// The next available position in the array.
+    next: usize,
+    /// The fixed-size array of values.
+    items: *const V,
+}

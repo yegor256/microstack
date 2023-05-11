@@ -24,8 +24,8 @@ impl<V: Clone + Copy, const N: usize> Clone for Stack<V, N> {
     /// Clone it.
     fn clone(&self) -> Self {
         let mut s: Self = Self::new();
-        for v in self.iter() {
-            s.push(*v);
+        for v in self.into_iter() {
+            s.push(v);
         }
         s
     }

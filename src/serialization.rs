@@ -31,8 +31,8 @@ impl<V: Serialize + Clone + Copy, const N: usize> Serialize for Stack<V, N> {
         S: Serializer,
     {
         let mut map = serializer.serialize_seq(Some(self.next))?;
-        for v in self.iter() {
-            map.serialize_element(v)?;
+        for v in self.into_iter() {
+            map.serialize_element(&v)?;
         }
         map.end()
     }
@@ -77,5 +77,5 @@ fn serialize_and_deserialize() {
     before.push(42);
     let bytes: Vec<u8> = serialize(&before).unwrap();
     let after: Stack<u8, 8> = deserialize(&bytes).unwrap();
-    assert_eq!(42, *after.iter().next().unwrap());
+    assert_eq!(42, after.into_iter().next().unwrap());
 }

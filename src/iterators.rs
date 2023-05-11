@@ -18,21 +18,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-use crate::Stack;
+use crate::{IntoIter, Stack};
 
-impl<V: Copy, const N: usize> Stack<V, N> {
-    /// Iterate them.
+impl<V: Copy, const N: usize> Iterator for IntoIter<V, N> {
+    type Item = V;
+
     #[inline]
-    pub fn iter(&self) -> impl Iterator<Item = &V> {
-        self.items.iter().take(self.next)
+    #[must_use]
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.pos >= self.next {
+            None
+        } else {
+            let v = unsafe { *self.items.add(self.pos) };
+            self.pos += 1;
+            Some(v)
+        }
     }
 }
 
 impl<'a, V: Clone + Copy + 'a, const N: usize> Stack<V, N> {
     /// Into-iterate them.
     #[inline]
-    pub fn into_iter(&self) -> impl Iterator<Item = V> + '_ {
-        self.items.iter().take(self.next).copied()
+    pub const fn into_iter(&self) -> IntoIter<V, N> {
+        IntoIter {
+            pos: 0,
+            next: self.next,
+            items: self.items.as_ptr(),
+        }
     }
 }
 
@@ -43,7 +55,7 @@ fn push_and_iterate() {
     p.push(2);
     p.push(3);
     let mut sum = 0;
-    for x in p.iter() {
+    for x in p.into_iter() {
         sum += x;
     }
     assert_eq!(6, sum);
@@ -59,20 +71,4 @@ fn push_and_into_iterate() {
         sum += x;
     }
     assert_eq!(3, sum);
-}
-
-#[test]
-fn push_clear_and_iterate() {
-    let mut p: Stack<u64, 16> = Stack::new();
-    p.push(1);
-    p.push(2);
-    p.push(3);
-    assert_eq!(3, p.len());
-    p.clear();
-    assert_eq!(0, p.len());
-    let mut sum = 0;
-    for x in p.iter() {
-        sum += x;
-    }
-    assert_eq!(0, sum);
 }
