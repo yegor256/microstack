@@ -20,7 +20,7 @@
 
 use crate::Stack;
 
-impl<V, const N: usize> Stack<V, N> {
+impl<V : Copy, const N: usize> Stack<V, N> {
     /// Make it from vector.
     #[inline]
     #[must_use]
@@ -83,7 +83,7 @@ impl<V, const N: usize> Stack<V, N> {
     }
 }
 
-impl<'a, V: Clone + 'a, const N: usize> Stack<V, N> {
+impl<'a, V: Clone + Copy + 'a, const N: usize> Stack<V, N> {
     /// Into-iterate them.
     #[inline]
     pub fn into_iter(&self) -> impl Iterator<Item = V> + '_ {

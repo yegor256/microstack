@@ -22,13 +22,13 @@ use crate::Stack;
 use std::fmt;
 use std::fmt::{Debug, Display, Formatter};
 
-impl<V: Display, const N: usize> Display for Stack<V, N> {
+impl<V: Display + Copy, const N: usize> Display for Stack<V, N> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         <&Self as Debug>::fmt(&self, f)
     }
 }
 
-impl<V: Display, const N: usize> Debug for Stack<V, N> {
+impl<V: Display + Copy, const N: usize> Debug for Stack<V, N> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let mut parts = vec![];
         for v in self.iter() {

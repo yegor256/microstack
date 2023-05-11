@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//! This is a simplest and the fastest implementation of a stack on stack.
+//! This is a simplest and the fastest implementation of a stack on stack,
+//! when stack elements are `Copy` implementing primitives.
 //!
 //! For example, here is how a stack can be created:
 //!
@@ -49,7 +50,8 @@ mod debug;
 mod serialization;
 mod stack;
 
-/// This is a simplest and the fastest implementation of a stack on stack.
+/// This is a simplest and the fastest implementation of a stack on stack,
+/// when stack elements are `Copy` implementing primitives.
 ///
 /// For example, here is how a stack can be created:
 ///
@@ -61,7 +63,7 @@ mod stack;
 /// assert_eq!(2, s.pop().unwrap());
 /// ```
 ///
-pub struct Stack<V, const N: usize> {
+pub struct Stack<V : Copy, const N: usize> {
     /// The next available position in the array.
     next: usize,
     /// The fixed-size array of values.
