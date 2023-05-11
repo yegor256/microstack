@@ -20,7 +20,7 @@
 
 use crate::Stack;
 
-impl<V : Copy, const N: usize> Stack<V, N> {
+impl<V: Copy, const N: usize> Stack<V, N> {
     /// Make it from vector.
     #[inline]
     #[must_use]
@@ -75,20 +75,6 @@ impl<V : Copy, const N: usize> Stack<V, N> {
     pub const fn len(&self) -> usize {
         self.next
     }
-
-    /// Iterate them.
-    #[inline]
-    pub fn iter(&self) -> impl Iterator<Item = &V> {
-        self.items.iter().take(self.next)
-    }
-}
-
-impl<'a, V: Clone + Copy + 'a, const N: usize> Stack<V, N> {
-    /// Into-iterate them.
-    #[inline]
-    pub fn into_iter(&self) -> impl Iterator<Item = V> + '_ {
-        self.items.iter().take(self.next).cloned()
-    }
 }
 
 #[test]
@@ -111,45 +97,4 @@ fn push_and_pop() {
     let mut s: Stack<u64, 16> = Stack::new();
     s.push(42);
     assert_eq!(42, s.pop().unwrap());
-}
-
-#[test]
-fn push_and_iterate() {
-    let mut p: Stack<u64, 16> = Stack::new();
-    p.push(1);
-    p.push(2);
-    p.push(3);
-    let mut sum = 0;
-    for x in p.iter() {
-        sum += x;
-    }
-    assert_eq!(6, sum);
-}
-
-#[test]
-fn push_and_into_iterate() {
-    let mut p: Stack<u64, 16> = Stack::new();
-    p.push(1);
-    p.push(2);
-    let mut sum = 0;
-    for x in p.into_iter() {
-        sum += x;
-    }
-    assert_eq!(3, sum);
-}
-
-#[test]
-fn push_clear_and_iterate() {
-    let mut p: Stack<u64, 16> = Stack::new();
-    p.push(1);
-    p.push(2);
-    p.push(3);
-    assert_eq!(3, p.len());
-    p.clear();
-    assert_eq!(0, p.len());
-    let mut sum = 0;
-    for x in p.iter() {
-        sum += x;
-    }
-    assert_eq!(0, sum);
 }

@@ -46,6 +46,7 @@
 mod clone;
 mod ctors;
 mod debug;
+mod iterators;
 #[cfg(feature = "serde")]
 mod serialization;
 mod stack;
@@ -63,7 +64,7 @@ mod stack;
 /// assert_eq!(2, s.pop().unwrap());
 /// ```
 ///
-pub struct Stack<V : Copy, const N: usize> {
+pub struct Stack<V: Copy, const N: usize> {
     /// The next available position in the array.
     next: usize,
     /// The fixed-size array of values.

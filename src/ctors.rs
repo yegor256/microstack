@@ -21,7 +21,7 @@
 use crate::Stack;
 use std::mem::MaybeUninit;
 
-impl<V : Copy, const N: usize> Default for Stack<V, N> {
+impl<V: Copy, const N: usize> Default for Stack<V, N> {
     /// Make a default empty [`Stack`].
     #[inline]
     #[must_use]
@@ -30,7 +30,7 @@ impl<V : Copy, const N: usize> Default for Stack<V, N> {
     }
 }
 
-impl<V : Copy, const N: usize> Stack<V, N> {
+impl<V: Copy, const N: usize> Stack<V, N> {
     /// Make it.
     ///
     /// The size of the stack is defined by the generic argument.

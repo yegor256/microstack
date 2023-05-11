@@ -20,26 +20,59 @@
 
 use crate::Stack;
 
-impl<V: Clone + Copy, const N: usize> Clone for Stack<V, N> {
-    /// Clone it.
-    fn clone(&self) -> Self {
-        let mut s: Self = Self::new();
-        for v in self.iter() {
-            s.push(*v);
-        }
-        s
+impl<V: Copy, const N: usize> Stack<V, N> {
+    /// Iterate them.
+    #[inline]
+    pub fn iter(&self) -> impl Iterator<Item = &V> {
+        self.items.iter().take(self.next)
+    }
+}
+
+impl<'a, V: Clone + Copy + 'a, const N: usize> Stack<V, N> {
+    /// Into-iterate them.
+    #[inline]
+    pub fn into_iter(&self) -> impl Iterator<Item = V> + '_ {
+        self.items.iter().take(self.next).copied()
     }
 }
 
 #[test]
-fn stack_can_be_cloned() {
-    let mut s: Stack<u8, 16> = Stack::new();
-    s.push(42);
-    assert_eq!(42, s.clone().pop().unwrap());
+fn push_and_iterate() {
+    let mut p: Stack<u64, 16> = Stack::new();
+    p.push(1);
+    p.push(2);
+    p.push(3);
+    let mut sum = 0;
+    for x in p.iter() {
+        sum += x;
+    }
+    assert_eq!(6, sum);
 }
 
 #[test]
-fn empty_stack_can_be_cloned() {
-    let m: Stack<u8, 0> = Stack::new();
-    assert!(m.clone().is_empty());
+fn push_and_into_iterate() {
+    let mut p: Stack<u64, 16> = Stack::new();
+    p.push(1);
+    p.push(2);
+    let mut sum = 0;
+    for x in p.into_iter() {
+        sum += x;
+    }
+    assert_eq!(3, sum);
+}
+
+#[test]
+fn push_clear_and_iterate() {
+    let mut p: Stack<u64, 16> = Stack::new();
+    p.push(1);
+    p.push(2);
+    p.push(3);
+    assert_eq!(3, p.len());
+    p.clear();
+    assert_eq!(0, p.len());
+    let mut sum = 0;
+    for x in p.iter() {
+        sum += x;
+    }
+    assert_eq!(0, sum);
 }
