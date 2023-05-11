@@ -32,7 +32,7 @@ fn push_different(b: &mut Bencher) {
         for i in 0..cap {
             s.push(i);
         }
-        for i in 0..cap {
+        for _ in 0..cap {
             s.pop();
         }
     });

@@ -18,60 +18,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-use crate::Stack;
-use std::mem::MaybeUninit;
+#![feature(test)]
 
-impl<V, const N: usize> Default for Stack<V, N> {
-    /// Make a default empty [`Stack`].
-    #[inline]
-    #[must_use]
-    fn default() -> Self {
-        Self::new()
-    }
-}
+extern crate test;
+use microstack::Stack;
+use test::Bencher;
 
-impl<V, const N: usize> Stack<V, N> {
-    /// Make it.
-    ///
-    /// The size of the stack is defined by the generic argument.
-    #[inline]
-    #[must_use]
-    #[allow(clippy::uninit_assumed_init)]
-    pub const fn new() -> Self {
-        unsafe {
-            Self {
-                next: 0,
-                items: MaybeUninit::<[V; N]>::uninit().assume_init(),
-            }
+const CAPACITY: usize = 4096;
+
+macro_rules! eval {
+    ($s:expr) => {{
+        let cap = $s.capacity();
+        for i in 0..cap {
+            $s.push(i);
         }
-    }
+        // for i in $s.iter() {
+        //     assert!(*i < cap);
+        // }
+        for _ in 0..cap {
+            $s.pop();
+        }
+        $s.clear();
+    }};
 }
 
-#[test]
-fn makes_default_stack() {
-    let s: Stack<u8, 8> = Stack::default();
-    assert_eq!(0, s.len());
+#[bench]
+fn stack_push_and_pop(b: &mut Bencher) {
+    b.iter(|| {
+        let mut s: Stack<usize, CAPACITY> = Stack::new();
+        eval!(s);
+    });
 }
 
-#[test]
-fn makes_new_stack() {
-    let s: Stack<u8, 8> = Stack::new();
-    assert_eq!(0, s.len());
-}
-
-#[test]
-#[ignore]
-fn drops_correctly() {
-    let _m: Stack<Vec<u8>, 8> = Stack::new();
-}
-
-#[test]
-#[ignore]
-fn drops_values() {
-    use std::rc::Rc;
-    let mut s: Stack<Rc<()>, 8> = Stack::new();
-    let v = Rc::new(());
-    s.push(Rc::clone(&v));
-    drop(s);
-    assert_eq!(Rc::strong_count(&v), 1);
+#[bench]
+fn vec_push_and_pop(b: &mut Bencher) {
+    b.iter(|| {
+        let mut s: Vec<usize> = Vec::with_capacity(CAPACITY);
+        eval!(s);
+    });
 }

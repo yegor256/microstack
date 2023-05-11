@@ -27,7 +27,7 @@
 //! let mut s : Stack<u64, 10> = Stack::new();
 //! s.push(1);
 //! s.push(2);
-//! assert_eq!(2, *s.pop().unwrap());
+//! assert_eq!(2, s.pop().unwrap());
 //! assert_eq!(1, s.len());
 //! ```
 //!
@@ -49,8 +49,6 @@ mod debug;
 mod serialization;
 mod stack;
 
-use std::mem::MaybeUninit;
-
 /// This is a simplest and the fastest implementation of a stack on stack.
 ///
 /// For example, here is how a stack can be created:
@@ -60,12 +58,12 @@ use std::mem::MaybeUninit;
 /// let mut s : Stack<u64, 10> = Stack::new();
 /// s.push(1);
 /// s.push(2);
-/// assert_eq!(2, *s.pop().unwrap());
+/// assert_eq!(2, s.pop().unwrap());
 /// ```
 ///
 pub struct Stack<V, const N: usize> {
     /// The next available position in the array.
     next: usize,
     /// The fixed-size array of values.
-    items: [MaybeUninit<V>; N],
+    items: [V; N],
 }

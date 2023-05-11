@@ -35,7 +35,7 @@ impl<V: Clone, const N: usize> Clone for Stack<V, N> {
 fn stack_can_be_cloned() {
     let mut s: Stack<u8, 16> = Stack::new();
     s.push(42);
-    assert_eq!(42, *s.clone().pop().unwrap());
+    assert_eq!(42, s.clone().pop().unwrap());
 }
 
 #[test]

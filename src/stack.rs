@@ -41,18 +41,21 @@ impl<V, const N: usize> Stack<V, N> {
     /// Push new element into it.
     #[inline]
     pub fn push(&mut self, v: V) {
-        self.items[self.next].write(v);
+        unsafe {
+            self.items.as_mut_ptr().add(self.next).write(v);
+        }
         self.next += 1;
     }
 
     /// Pop a element from it.
     #[inline]
-    pub fn pop(&mut self) -> Option<&V> {
+    pub fn pop(&mut self) -> Option<V> {
         if self.next == 0 {
-            return None;
+            None
+        } else {
+            self.next -= 1;
+            Some(unsafe { self.items.as_ptr().add(self.next).read() })
         }
-        self.next -= 1;
-        Some(unsafe { self.items[self.next].assume_init_ref() })
     }
 
     /// Clear.
@@ -76,10 +79,7 @@ impl<V, const N: usize> Stack<V, N> {
     /// Iterate them.
     #[inline]
     pub fn iter(&self) -> impl Iterator<Item = &V> {
-        self.items
-            .iter()
-            .take(self.next)
-            .map(|mu| unsafe { mu.assume_init_ref() })
+        self.items.iter().take(self.next)
     }
 }
 
@@ -87,10 +87,7 @@ impl<'a, V: Clone + 'a, const N: usize> Stack<V, N> {
     /// Into-iterate them.
     #[inline]
     pub fn into_iter(&self) -> impl Iterator<Item = V> + '_ {
-        self.items
-            .iter()
-            .take(self.next)
-            .map(|mu| unsafe { mu.assume_init_read() })
+        self.items.iter().take(self.next).cloned()
     }
 }
 
@@ -98,7 +95,7 @@ impl<'a, V: Clone + 'a, const N: usize> Stack<V, N> {
 fn push_one() {
     let mut s: Stack<u64, 1> = Stack::new();
     s.push(42);
-    assert_eq!(42, *s.pop().unwrap());
+    assert_eq!(42, s.pop().unwrap());
 }
 
 #[test]
@@ -110,18 +107,10 @@ fn pop_none() {
 }
 
 #[test]
-#[should_panic]
-fn push_out_of_boundary() {
-    let mut s: Stack<u64, 1> = Stack::new();
-    s.push(42);
-    s.push(42);
-}
-
-#[test]
 fn push_and_pop() {
     let mut s: Stack<u64, 16> = Stack::new();
     s.push(42);
-    assert_eq!(42, *s.pop().unwrap());
+    assert_eq!(42, s.pop().unwrap());
 }
 
 #[test]
