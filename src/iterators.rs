@@ -29,7 +29,7 @@ impl<V: Copy, const N: usize> Iterator for IntoIter<V, N> {
         if self.pos >= self.next {
             None
         } else {
-            let v = unsafe { *self.items.add(self.pos) };
+            let v = unsafe { self.items.add(self.pos).read() };
             self.pos += 1;
             Some(v)
         }

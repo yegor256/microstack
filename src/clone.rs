@@ -19,14 +19,14 @@
 // SOFTWARE.
 
 use crate::Stack;
+use std::ptr;
 
 impl<V: Clone + Copy, const N: usize> Clone for Stack<V, N> {
     /// Clone it.
     fn clone(&self) -> Self {
         let mut s: Self = Self::new();
-        for v in self.into_iter() {
-            s.push(v);
-        }
+        s.next = self.next;
+        unsafe { ptr::copy::<V>(self.items.as_ptr(), s.items.as_mut_ptr(), s.next) };
         s
     }
 }
@@ -36,6 +36,15 @@ fn stack_can_be_cloned() {
     let mut s: Stack<u8, 16> = Stack::new();
     s.push(42);
     assert_eq!(42, s.clone().pop().unwrap());
+}
+
+#[test]
+fn full_stack_can_be_cloned() {
+    let mut s: Stack<usize, 16> = Stack::new();
+    for i in 0..s.capacity() {
+        s.push(i);
+    }
+    assert_eq!(s.capacity() - 1, s.clone().pop().unwrap());
 }
 
 #[test]
