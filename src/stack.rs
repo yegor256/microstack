@@ -34,6 +34,7 @@ impl<V: Copy, const N: usize> Stack<V, N> {
 
     /// Get the capacity.
     #[inline]
+    #[must_use]
     pub fn capacity(&mut self) -> usize {
         N
     }
@@ -69,6 +70,7 @@ impl<V: Copy, const N: usize> Stack<V, N> {
     ///
     /// If there is no more elements left, it will return `None`.
     #[inline]
+    #[must_use]
     pub fn try_pop(&mut self) -> Option<V> {
         if self.next == 0 {
             None
@@ -85,12 +87,14 @@ impl<V: Copy, const N: usize> Stack<V, N> {
 
     /// Is it empty.
     #[inline]
+    #[must_use]
     pub const fn is_empty(&self) -> bool {
         self.len() == 0
     }
 
     /// Length of it.
     #[inline]
+    #[must_use]
     pub const fn len(&self) -> usize {
         self.next
     }
