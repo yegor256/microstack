@@ -15,7 +15,7 @@ First, add this to `Cargo.toml`:
 
 ```toml
 [dependencies]
-microstack = "0.0.4"
+microstack = "0.0.5"
 ```
 
 Then, use it like this:
