@@ -8,7 +8,8 @@
 
 This is the simplest and the fastest implementation of a 
 [stack data structure](https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29), 
-on [stack](https://en.wikipedia.org/wiki/Call_stack). 
+on [stack](https://en.wikipedia.org/wiki/Call_stack), 
+when stack elements are `Copy` implementing primitives. 
 
 First, add this to `Cargo.toml`:
 
@@ -24,12 +25,12 @@ use microstack::Stack;
 let mut s : Stack<&str, 10> = Stack::new(); // allocation on stack
 s.push("foo");
 s.push("bar");
-assert_eq!("bar", *s.pop().unwrap());
+assert_eq!("bar", s.pop());
 assert_eq!(1, s.len());
 ```
 
 Pay attention, here the stack is created with an extra generic argument `10`. This is 
-the total size of the stack, which is allocated on stack when `::new()` is called. 
+the total size of the stack data structure, which is allocated on stack when `::new()` is called. 
 
 Read [the API documentation](https://docs.rs/microstack/latest/microstack/).
 
