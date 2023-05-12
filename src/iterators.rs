@@ -58,9 +58,11 @@ impl<'a, V: Copy, const N: usize> Iterator for Iter<'a, V, N> {
         if self.pos >= self.next {
             None
         } else {
-            let v = unsafe { self.items.add(self.pos) };
-            self.pos += 1;
-            unsafe { v.as_ref() }
+            unsafe {
+                let v = self.items.add(self.pos);
+                self.pos += 1;
+                v.as_ref()
+            }
         }
     }
 }
