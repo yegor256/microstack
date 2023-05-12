@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-use crate::{IntoIter, Stack};
+use crate::{IntoIter, Iter, Stack};
+use std::marker::PhantomData;
 
 impl<V: Copy, const N: usize> Iterator for IntoIter<V, N> {
     type Item = V;
@@ -48,6 +49,35 @@ impl<'a, V: Copy + 'a, const N: usize> Stack<V, N> {
     }
 }
 
+impl<'a, V: Copy, const N: usize> Iterator for Iter<'a, V, N> {
+    type Item = &'a V;
+
+    #[inline]
+    #[must_use]
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.pos >= self.next {
+            None
+        } else {
+            let v = unsafe { self.items.add(self.pos) };
+            self.pos += 1;
+            unsafe { v.as_ref() }
+        }
+    }
+}
+
+impl<'a, V: Copy + 'a, const N: usize> Stack<V, N> {
+    /// Iterate them.
+    #[inline]
+    pub const fn iter(&self) -> Iter<V, N> {
+        Iter {
+            pos: 0,
+            next: self.next,
+            items: self.items.as_ptr(),
+            _marker: PhantomData,
+        }
+    }
+}
+
 #[test]
 fn push_and_iterate() {
     let mut p: Stack<u64, 16> = Stack::new();
@@ -55,7 +85,7 @@ fn push_and_iterate() {
     p.push(2);
     p.push(3);
     let mut sum = 0;
-    for x in p.into_iter() {
+    for x in p.iter() {
         sum += x;
     }
     assert_eq!(6, sum);

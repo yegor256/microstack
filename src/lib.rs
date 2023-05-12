@@ -43,6 +43,8 @@
 #![allow(clippy::multiple_inherent_impl)]
 #![allow(clippy::multiple_crate_versions)]
 
+use std::marker::PhantomData;
+
 mod clone;
 mod ctors;
 mod debug;
@@ -69,6 +71,17 @@ pub struct Stack<V: Copy, const N: usize> {
     next: usize,
     /// The fixed-size array of values.
     items: [V; N],
+}
+
+/// Iterator.
+pub struct Iter<'a, V: Copy, const N: usize> {
+    /// The position.
+    pos: usize,
+    /// The next available position in the array.
+    next: usize,
+    /// The fixed-size array of values.
+    items: *const V,
+    _marker: PhantomData<&'a V>,
 }
 
 /// Into-iterator.
