@@ -1,6 +1,6 @@
 [package]
 name = "microstack"
-version = "0.0.0"
+version = "0.0.4"
 edition = "2021"
 repository = "https://github.com/yegor256/microstack"
 description = "The simplest and the fastest implementation of a fixed-size stack on stack"
