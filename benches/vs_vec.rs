@@ -33,8 +33,8 @@ macro_rules! eval {
             $s.push(i);
         }
         $s.clone().clear();
-        for i in $s.clone().into_iter() {
-            assert!(i < cap);
+        for i in $s.clone().iter() {
+            assert!(*i < cap);
         }
         for _ in 0..cap {
             $s.pop();
