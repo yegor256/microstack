@@ -31,7 +31,7 @@ impl<V: Display + Copy, const N: usize> Display for Stack<V, N> {
 impl<V: Display + Copy, const N: usize> Debug for Stack<V, N> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let mut parts = vec![];
-        for v in self.into_iter() {
+        for v in self.iter() {
             parts.push(format!("{v}"));
         }
         f.write_str(format!("[{}]", parts.join(", ").as_str()).as_str())

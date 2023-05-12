@@ -31,7 +31,7 @@ impl<V: Serialize + Copy, const N: usize> Serialize for Stack<V, N> {
         S: Serializer,
     {
         let mut map = serializer.serialize_seq(Some(self.next))?;
-        for v in self.into_iter() {
+        for v in self.iter() {
             map.serialize_element(&v)?;
         }
         map.end()
