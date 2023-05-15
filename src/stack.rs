@@ -138,6 +138,12 @@ fn pop_none() {
 }
 
 #[test]
+fn read_capacity() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    assert_eq!(1, s.capacity());
+}
+
+#[test]
 fn safely_pop() {
     let mut s: Stack<u64, 1> = Stack::new();
     s.push(42);
