@@ -116,6 +116,13 @@ fn pop_none() {
 }
 
 #[test]
+fn with_str() {
+    let mut s: Stack<&str, 1> = Stack::new();
+    s.push("Hello!");
+    assert_eq!("Hello!", s.pop());
+}
+
+#[test]
 #[should_panic]
 fn panic_on_empty_stack() {
     let mut s: Stack<u64, 0> = Stack::new();
