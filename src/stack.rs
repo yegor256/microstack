@@ -72,32 +72,54 @@ impl<V: Copy, const N: usize> Stack<V, N> {
     ///
     /// If there is not enough space in the stack, `Err` is returned.
     #[inline]
-    pub fn try_push(&mut self, v: V) -> Result<(), V> {
+    pub fn try_push(&mut self, v: V) -> Result<(), String> {
         if self.next < N {
             self.push(v);
             Ok(())
         } else {
-            Err(v)
+            Err(format!(
+                "There are no space left in the stack of {}",
+                self.capacity()
+            ))
         }
     }
 
     /// Pop a element from it.
+    ///
+    /// # Safety
+    ///
+    /// If there are no items in the array, the result is undefined.
     #[inline]
-    pub fn pop(&mut self) -> V {
+    pub unsafe fn pop_unchecked(&mut self) -> V {
         self.next -= 1;
-        unsafe { self.items.as_ptr().add(self.next).read() }
+        self.items.as_ptr().add(self.next).read()
     }
 
     /// Pop a element from it.
     ///
+    /// # Panics
+    ///
+    /// If there are no items in the array, it will panic.
+    #[inline]
+    pub fn pop(&mut self) -> V {
+        assert!(self.next > 0, "No more items left in the stack");
+        unsafe { self.pop_unchecked() }
+    }
+
+    /// Pop a element from it.
+    ///
+    /// # Errors
+    ///
     /// If there is no more elements left, it will return `None`.
     #[inline]
-    #[must_use]
-    pub fn try_pop(&mut self) -> Option<V> {
+    pub fn try_pop(&mut self) -> Result<V, String> {
         if self.next == 0 {
-            None
+            Err(format!(
+                "There are no items left in the stack of {}",
+                self.capacity()
+            ))
         } else {
-            Some(self.pop())
+            Ok(self.pop())
         }
     }
 
@@ -164,7 +186,7 @@ fn pop_none() {
     let mut s: Stack<u64, 1> = Stack::new();
     assert_eq!(0, s.len());
     assert!(s.is_empty());
-    assert!(s.try_pop().is_none());
+    assert!(s.try_pop().is_err());
 }
 
 #[test]
@@ -189,10 +211,18 @@ fn with_str() {
 
 #[test]
 #[should_panic]
-fn panic_on_empty_stack() {
+fn panic_on_empty_stack_push() {
     let mut s: Stack<u64, 0> = Stack::new();
     assert_eq!(0, s.len());
     s.push(11);
+}
+
+#[test]
+#[should_panic]
+fn panic_on_empty_stack_pop() {
+    let mut s: Stack<u64, 0> = Stack::new();
+    assert_eq!(0, s.len());
+    s.pop();
 }
 
 #[test]
