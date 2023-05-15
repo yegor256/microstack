@@ -10,7 +10,7 @@ This is the simplest and the fastest (faster than [`Vec`](https://doc.rust-lang.
 last-in-first-out [stack data structure](https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29), 
 on [stack](https://en.wikipedia.org/wiki/Call_stack), 
 when stack elements are `Copy` implementing primitives. 
-This is basically a wrapper around an uninitialized array.
+This is basically a wrapper around an [uninitialized](https://doc.rust-lang.org/nomicon/uninitialized.html) array.
 When it is created on stack, its elements contain no specific data.
 Then, when you `push(x)`, the head of the stack is moved forward
 and `x` is placed into the element of the array. When you `pop()`,
