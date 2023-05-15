@@ -31,7 +31,7 @@ Then, use it like this:
 use microstack::Stack;
 let mut s : Stack<&str, 10> = Stack::new(); // allocation on stack
 s.push("foo");
-s.push("bar");
+s.push("bar"); // no boundary checks here
 assert_eq!("bar", s.pop());
 assert_eq!(1, s.len());
 ```
