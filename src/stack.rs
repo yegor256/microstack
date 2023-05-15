@@ -108,6 +108,19 @@ fn push_one() {
 }
 
 #[test]
+fn push_safely() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    s.try_push(42);
+    assert_eq!(42, s.pop());
+}
+
+#[test]
+fn build_from_vec() {
+    let mut s: Stack<u64, 1> = Stack::from_vec(vec![42]);
+    assert_eq!(42, s.pop());
+}
+
+#[test]
 fn pop_none() {
     let mut s: Stack<u64, 1> = Stack::new();
     assert_eq!(0, s.len());
