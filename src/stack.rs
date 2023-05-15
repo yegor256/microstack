@@ -129,6 +129,13 @@ fn pop_none() {
 }
 
 #[test]
+fn safely_pop() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    s.push(42);
+    assert_eq!(42, s.try_pop().unwrap());
+}
+
+#[test]
 fn with_str() {
     let mut s: Stack<&str, 1> = Stack::new();
     s.push("Hello!");
