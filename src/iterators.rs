@@ -83,9 +83,9 @@ impl<'a, V: Copy + 'a, const N: usize> Stack<V, N> {
 #[test]
 fn push_and_iterate() {
     let mut p: Stack<u64, 16> = Stack::new();
-    p.push(1);
-    p.push(2);
-    p.push(3);
+    unsafe { p.push_unchecked(1) };
+    unsafe { p.push_unchecked(2) };
+    unsafe { p.push_unchecked(3) };
     let mut sum = 0;
     for x in p.iter() {
         sum += x;
@@ -96,8 +96,8 @@ fn push_and_iterate() {
 #[test]
 fn push_and_into_iterate() {
     let mut p: Stack<u64, 16> = Stack::new();
-    p.push(1);
-    p.push(2);
+    unsafe { p.push_unchecked(1) };
+    unsafe { p.push_unchecked(2) };
     let mut sum = 0;
     for x in p.into_iter() {
         sum += x;

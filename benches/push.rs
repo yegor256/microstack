@@ -30,7 +30,7 @@ fn push_different(b: &mut Bencher) {
     b.iter(|| {
         let cap = s.capacity();
         for i in 0..cap {
-            s.push(i);
+            s.push_unchecked(i);
         }
         for _ in 0..cap {
             s.pop();
@@ -44,7 +44,7 @@ fn push_and_pop(b: &mut Bencher) {
     b.iter(|| {
         let cap = s.capacity();
         for i in 0..cap {
-            s.push(i);
+            s.push_unchecked(i);
             s.pop();
         }
     });

@@ -41,15 +41,15 @@ impl<V: Display + Copy, const N: usize> Debug for Stack<V, N> {
 #[test]
 fn debugs_stack() {
     let mut s: Stack<&str, 10> = Stack::new();
-    s.push("one");
-    s.push("two");
+    unsafe { s.push_unchecked("one") };
+    unsafe { s.push_unchecked("two") };
     assert_eq!("[one, two]", format!("{:?}", s));
 }
 
 #[test]
 fn displays_stack() {
     let mut s: Stack<&str, 10> = Stack::new();
-    s.push("one");
-    s.push("two");
+    unsafe { s.push_unchecked("one") };
+    unsafe { s.push_unchecked("two") };
     assert_eq!("[one, two]", format!("{}", s));
 }

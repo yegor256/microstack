@@ -27,7 +27,7 @@ impl<V: Copy, const N: usize> Stack<V, N> {
     pub fn from_vec(v: Vec<V>) -> Self {
         let mut p = Self::new();
         for i in v {
-            p.push(i);
+            unsafe { p.push_unchecked(i) };
         }
         p
     }
@@ -40,11 +40,13 @@ impl<V: Copy, const N: usize> Stack<V, N> {
     }
 
     /// Push new element into it.
+    ///
+    /// # Safety
+    ///
+    /// It may lead to undefined behavior, if you go over the boundary.
     #[inline]
-    pub fn push(&mut self, v: V) {
-        unsafe {
-            self.items.as_mut_ptr().add(self.next).write(v);
-        }
+    pub unsafe fn push_unchecked(&mut self, v: V) {
+        self.items.as_mut_ptr().add(self.next).write(v);
         self.next += 1;
     }
 
@@ -54,9 +56,11 @@ impl<V: Copy, const N: usize> Stack<V, N> {
     ///
     /// If there is no more space in the stack, it will panic.
     #[inline]
-    pub fn try_push(&mut self, v: V) {
+    pub fn push(&mut self, v: V) {
         assert!(self.next < N, "No more space left in the stack");
-        self.push(v);
+        unsafe {
+            self.push_unchecked(v);
+        }
     }
 
     /// Pop a element from it.
@@ -103,23 +107,23 @@ impl<V: Copy, const N: usize> Stack<V, N> {
 #[test]
 fn push_one() {
     let mut s: Stack<u64, 1> = Stack::new();
-    s.push(42);
+    unsafe { s.push_unchecked(42) };
     assert_eq!(42, s.pop());
 }
 
 #[test]
 fn push_safely() {
     let mut s: Stack<u64, 1> = Stack::new();
-    s.try_push(42);
+    s.push(42);
     assert_eq!(42, s.pop());
 }
 
 #[test]
 fn push_after_clear() {
     let mut s: Stack<u64, 1> = Stack::new();
-    s.push(42);
+    unsafe { s.push_unchecked(42) };
     s.clear();
-    s.try_push(16);
+    s.push(16);
     assert_eq!(16, s.pop());
 }
 
@@ -162,7 +166,7 @@ fn with_str() {
 fn panic_on_empty_stack() {
     let mut s: Stack<u64, 0> = Stack::new();
     assert_eq!(0, s.len());
-    s.try_push(11);
+    s.push(11);
 }
 
 #[test]
