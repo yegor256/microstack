@@ -163,7 +163,15 @@ fn try_to_push() {
     let mut s: Stack<u64, 1> = Stack::new();
     assert!(s.try_push(42).is_ok());
     assert!(s.try_push(16).is_err());
+    assert!(s.try_push(0).err().unwrap().contains("space"));
     assert_eq!(42, s.pop());
+}
+
+#[test]
+fn try_to_pop() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    assert!(s.try_pop().is_err());
+    assert!(s.try_pop().err().unwrap().contains("left"));
 }
 
 #[test]

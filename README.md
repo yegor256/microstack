@@ -35,11 +35,12 @@ use microstack::Stack;
 let mut s : Stack<&str, 10> = Stack::new(); // allocation on stack
 unsafe { s.push_unchecked("foo") }; // no boundary checks here
 unsafe { s.push_unchecked("bar") }; // and here
-assert_eq!("bar", unsafe { s.pop_unchecked() });
+assert_eq!("bar", unsafe { s.pop_unchecked() }); // and here again
 assert_eq!(1, s.len());
 ```
 
-Pay attention, here the stack is created with an extra generic argument `10`. This is 
+Pay attention, here the stack is created with an extra 
+[const generic argument](https://practice.rs/generics-traits/const-generics.html) equal to `10`. This is 
 the total size of the stack data structure, which is allocated on stack when `::new()` is called. 
 
 Read [the API documentation](https://docs.rs/microstack/latest/microstack/).
