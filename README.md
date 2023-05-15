@@ -10,6 +10,13 @@ This is the simplest and the fastest implementation of a
 [stack data structure](https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29), 
 on [stack](https://en.wikipedia.org/wiki/Call_stack), 
 when stack elements are `Copy` implementing primitives. 
+This is basically a wrapper around an uninitialized array.
+When it is created on stack, its elements contain no specific data.
+Then, when you `push(x)`, the head of the stack is moved forward
+and `x` is placed into the element of the array. When you `pop()`,
+the head is moved backward and the data is retrieved from the array.
+There are no boundary checks, that's why both `push()` and `pop()` may lead to undefined
+behavior. Use `try_push()` and `try_pop()`, which are safer, but slower.
 
 First, add this to `Cargo.toml`:
 
