@@ -23,7 +23,7 @@ First, add this to `Cargo.toml`:
 
 ```toml
 [dependencies]
-microstack = "0.0.5"
+microstack = "0.0.7"
 ```
 
 Then, use it like this (mind the `unsafe` blocks, they give the fastest performance, 
