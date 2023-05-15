@@ -13,10 +13,11 @@ when stack elements are `Copy` implementing primitives.
 This is basically a wrapper around an [uninitialized](https://doc.rust-lang.org/nomicon/uninitialized.html) array.
 When it is created on stack, its elements contain no specific data.
 Then, when you `push_unchecked(x)`, the head of the stack is moved forward
-and `x` is placed into the element of the array. When you `pop()`,
+and `x` is placed into the element of the array. When you `pop_unchecked()`,
 the head is moved backward and the data is retrieved from the array.
-There are no boundary checks, that's why both `push_unchecked()` and `pop()` may lead to undefined
-behavior. Use `push()` and `try_pop()`, which are safer, but slower.
+There are no boundary checks, that's why both `push_unchecked()` and `pop_unchecked()` may lead to undefined
+behavior. Use `push()` and `pop()`, which are safer, but slower.
+For even slower but even safer behavior, you can use `try_push()` and `try_pop()`.
 
 First, add this to `Cargo.toml`:
 
@@ -25,14 +26,16 @@ First, add this to `Cargo.toml`:
 microstack = "0.0.5"
 ```
 
-Then, use it like this:
+Then, use it like this (mind the `unsafe` blocks, they give the fastest performance, 
+but [undefined behavior](https://doc.rust-lang.org/reference/behavior-considered-undefined.html) 
+if you go over the stack boundaries):
 
 ```rust
 use microstack::Stack;
 let mut s : Stack<&str, 10> = Stack::new(); // allocation on stack
 unsafe { s.push_unchecked("foo") }; // no boundary checks here
 unsafe { s.push_unchecked("bar") }; // and here
-assert_eq!("bar", s.pop());
+assert_eq!("bar", unsafe { s.pop_unchecked() });
 assert_eq!(1, s.len());
 ```
 
