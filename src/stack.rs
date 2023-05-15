@@ -63,6 +63,24 @@ impl<V: Copy, const N: usize> Stack<V, N> {
         }
     }
 
+    /// Makes an attempt to push a new element into the stack.
+    ///
+    /// If there was enough space in the stack, `Ok(v)` is returned, while
+    /// `Err` is returned otherwise.
+    ///
+    /// # Errors
+    ///
+    /// If there is not enough space in the stack, `Err` is returned.
+    #[inline]
+    pub fn try_push(&mut self, v: V) -> Result<(), V> {
+        if self.next < N {
+            self.push(v);
+            Ok(())
+        } else {
+            Err(v)
+        }
+    }
+
     /// Pop a element from it.
     #[inline]
     pub fn pop(&mut self) -> V {
@@ -115,6 +133,14 @@ fn push_one() {
 fn push_safely() {
     let mut s: Stack<u64, 1> = Stack::new();
     s.push(42);
+    assert_eq!(42, s.pop());
+}
+
+#[test]
+fn try_to_push() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    assert!(s.try_push(42).is_ok());
+    assert!(s.try_push(16).is_err());
     assert_eq!(42, s.pop());
 }
 
