@@ -7,7 +7,7 @@
 [![docs.rs](https://img.shields.io/docsrs/microstack)](https://docs.rs/microstack/latest/microstack/)
 
 This is the simplest and the fastest (faster than [`Vec`](https://doc.rust-lang.org/std/vec/struct.Vec.html)!) implementation of a 
-[stack data structure](https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29), 
+last-in-first-out [stack data structure](https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29), 
 on [stack](https://en.wikipedia.org/wiki/Call_stack), 
 when stack elements are `Copy` implementing primitives. 
 This is basically a wrapper around an uninitialized array.
