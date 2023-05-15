@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yegor256/microstack/blob/master/LICENSE.txt)
 [![docs.rs](https://img.shields.io/docsrs/microstack)](https://docs.rs/microstack/latest/microstack/)
 
-This is the simplest and the fastest implementation of a 
+This is the simplest and the fastest (faster than [`Vec`](https://doc.rust-lang.org/std/vec/struct.Vec.html)!) implementation of a 
 [stack data structure](https://en.wikipedia.org/wiki/Stack_%28abstract_data_type%29), 
 on [stack](https://en.wikipedia.org/wiki/Call_stack), 
 when stack elements are `Copy` implementing primitives. 
