@@ -115,6 +115,15 @@ fn push_safely() {
 }
 
 #[test]
+fn push_after_clear() {
+    let mut s: Stack<u64, 1> = Stack::new();
+    s.push(42);
+    s.clear();
+    s.try_push(16);
+    assert_eq!(16, s.pop());
+}
+
+#[test]
 fn build_from_vec() {
     let mut s: Stack<u64, 1> = Stack::from_vec(vec![42]);
     assert_eq!(42, s.pop());
