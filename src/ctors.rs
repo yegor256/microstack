@@ -24,7 +24,6 @@ use std::mem::MaybeUninit;
 impl<V: Copy, const N: usize> Default for Stack<V, N> {
     /// Make a default empty [`Stack`].
     #[inline]
-    #[must_use]
     fn default() -> Self {
         Self::new()
     }

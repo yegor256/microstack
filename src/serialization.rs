@@ -43,7 +43,7 @@ struct Vi<V, const N: usize>(PhantomData<V>);
 impl<'de, V: Copy + Deserialize<'de>, const N: usize> Visitor<'de> for Vi<V, N> {
     type Value = Stack<V, N>;
 
-    fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {
+    fn expecting(&self, formatter: &mut Formatter<'_>) -> std::fmt::Result {
         formatter.write_str("a Stack")
     }
 
