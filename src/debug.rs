@@ -23,13 +23,13 @@ use std::fmt;
 use std::fmt::{Debug, Display, Formatter};
 
 impl<V: Display + Copy, const N: usize> Display for Stack<V, N> {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         <&Self as Debug>::fmt(&self, f)
     }
 }
 
 impl<V: Display + Copy, const N: usize> Debug for Stack<V, N> {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let mut parts = vec![];
         for v in self.iter() {
             parts.push(format!("{v}"));
