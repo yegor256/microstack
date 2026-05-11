@@ -25,7 +25,6 @@ impl<V: Copy, const N: usize> Iterator for IntoIter<V, N> {
     type Item = V;
 
     #[inline]
-    #[must_use]
     fn next(&mut self) -> Option<Self::Item> {
         if self.pos >= self.next {
             None
@@ -53,7 +52,6 @@ impl<'a, V: Copy, const N: usize> Iterator for Iter<'a, V, N> {
     type Item = &'a V;
 
     #[inline]
-    #[must_use]
     fn next(&mut self) -> Option<Self::Item> {
         if self.pos >= self.next {
             None
@@ -70,7 +68,7 @@ impl<'a, V: Copy, const N: usize> Iterator for Iter<'a, V, N> {
 impl<'a, V: Copy + 'a, const N: usize> Stack<V, N> {
     /// Iterate them.
     #[inline]
-    pub const fn iter(&self) -> Iter<V, N> {
+    pub const fn iter(&self) -> Iter<'_, V, N> {
         Iter {
             pos: 0,
             next: self.next,
