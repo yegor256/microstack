@@ -38,7 +38,7 @@
 //! to a panic.
 
 #![doc(html_root_url = "https://docs.rs/microstack/0.0.0")]
-#![deny(warnings)]
+#![deny(rust_2018_idioms, unused, deprecated)]
 #![warn(clippy::all, clippy::pedantic, clippy::nursery, clippy::cargo)]
 #![allow(clippy::multiple_inherent_impl)]
 #![allow(clippy::multiple_crate_versions)]

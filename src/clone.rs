@@ -23,7 +23,6 @@ use std::ptr;
 
 impl<V: Copy, const N: usize> Clone for Stack<V, N> {
     /// Clone it.
-    #[must_use]
     fn clone(&self) -> Self {
         let mut s: Self = Self::new();
         s.next = self.next;
