@@ -36,7 +36,7 @@ impl<V: Copy, const N: usize> Iterator for IntoIter<V, N> {
     }
 }
 
-impl<'a, V: Copy + 'a, const N: usize> Stack<V, N> {
+impl<V: Copy, const N: usize> Stack<V, N> {
     /// Into-iterate them.
     #[inline]
     pub const fn into_iter(&self) -> IntoIter<V, N> {
@@ -65,7 +65,7 @@ impl<'a, V: Copy, const N: usize> Iterator for Iter<'a, V, N> {
     }
 }
 
-impl<'a, V: Copy + 'a, const N: usize> Stack<V, N> {
+impl<V: Copy, const N: usize> Stack<V, N> {
     /// Iterate them.
     #[inline]
     pub const fn iter(&self) -> Iter<'_, V, N> {
