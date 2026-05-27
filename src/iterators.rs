@@ -29,21 +29,23 @@ impl<V: Copy, const N: usize> Iterator for IntoIter<V, N> {
         if self.pos >= self.next {
             None
         } else {
-            let v = unsafe { self.items.add(self.pos).read() };
+            let v = self.items[self.pos];
             self.pos += 1;
             Some(v)
         }
     }
 }
 
-impl<'a, V: Copy + 'a, const N: usize> Stack<V, N> {
-    /// Into-iterate them.
+impl<V: Copy, const N: usize> IntoIterator for Stack<V, N> {
+    type Item = V;
+    type IntoIter = IntoIter<V, N>;
+
     #[inline]
-    pub const fn into_iter(&self) -> IntoIter<V, N> {
+    fn into_iter(self) -> Self::IntoIter {
         IntoIter {
             pos: 0,
             next: self.next,
-            items: self.items.as_ptr(),
+            items: self.items,
         }
     }
 }
@@ -96,9 +98,5 @@ fn push_and_into_iterate() {
     let mut p: Stack<u64, 16> = Stack::new();
     unsafe { p.push_unchecked(1) };
     unsafe { p.push_unchecked(2) };
-    let mut sum = 0;
-    for x in p.into_iter() {
-        sum += x;
-    }
-    assert_eq!(3, sum);
+    assert_eq!(vec![1, 2], p.into_iter().collect::<Vec<_>>());
 }

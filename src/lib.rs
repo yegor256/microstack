@@ -91,5 +91,5 @@ pub struct IntoIter<V: Copy, const N: usize> {
     /// The next available position in the array.
     next: usize,
     /// The fixed-size array of values.
-    items: *const V,
+    items: [V; N],
 }
