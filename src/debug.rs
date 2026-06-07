@@ -24,15 +24,19 @@ use std::fmt::{Debug, Display, Formatter};
 
 impl<V: Display + Copy, const N: usize> Display for Stack<V, N> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        <&Self as Debug>::fmt(&self, f)
-    }
-}
-
-impl<V: Display + Copy, const N: usize> Debug for Stack<V, N> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let mut parts = vec![];
         for v in self.iter() {
             parts.push(format!("{v}"));
+        }
+        f.write_str(format!("[{}]", parts.join(", ").as_str()).as_str())
+    }
+}
+
+impl<V: Debug + Copy, const N: usize> Debug for Stack<V, N> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        let mut parts = vec![];
+        for v in self.iter() {
+            parts.push(format!("{v:?}"));
         }
         f.write_str(format!("[{}]", parts.join(", ").as_str()).as_str())
     }
@@ -43,7 +47,15 @@ fn debugs_stack() {
     let mut s: Stack<&str, 10> = Stack::new();
     unsafe { s.push_unchecked("one") };
     unsafe { s.push_unchecked("two") };
-    assert_eq!("[one, two]", format!("{:?}", s));
+    assert_eq!("[\"one\", \"two\"]", format!("{:?}", s));
+}
+
+#[test]
+fn debugs_stack_of_debug_only_type() {
+    let mut s: Stack<Option<i32>, 10> = Stack::new();
+    unsafe { s.push_unchecked(Some(1)) };
+    unsafe { s.push_unchecked(None) };
+    assert_eq!("[Some(1), None]", format!("{:?}", s));
 }
 
 #[test]
