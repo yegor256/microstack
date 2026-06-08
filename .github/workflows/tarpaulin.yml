@@ -13,10 +13,12 @@ jobs:
         with:
           toolchain: stable
           override: true
-      - uses: actions-rs/tarpaulin@v0.1
+      - uses: taiki-e/install-action@v2
         with:
-          version: '0.22.0'
-          args: '--all-features --exclude-files src/lib.rs -- --test-threads 1'
+          tool: cargo-tarpaulin
+      - run: >-
+          cargo tarpaulin --out Xml --all-features
+          --exclude-files src/lib.rs -- --test-threads 1
       - uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: true
