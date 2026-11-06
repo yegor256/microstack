@@ -7,6 +7,9 @@ on:
 jobs:
   check:
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v7
       - uses: actions-rs/toolchain@v1
@@ -22,3 +25,4 @@ jobs:
       - uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: true
+          use_oidc: true
