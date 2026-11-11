@@ -33,6 +33,19 @@ impl<V: Copy, const N: usize> Stack<V, N> {
             None
         }
     }
+
+    /// Return a mutable reference to the element at the given position,
+    /// counted from the bottom of the stack, or `None` if the index is out
+    /// of range.
+    #[inline]
+    #[must_use]
+    pub fn get_mut(&mut self, idx: usize) -> Option<&mut V> {
+        if idx < self.next {
+            Some(&mut self.items[idx])
+        } else {
+            None
+        }
+    }
 }
 
 impl<V: Copy, const N: usize> Index<usize> for Stack<V, N> {
@@ -92,4 +105,20 @@ fn index_panics_out_of_range() {
     let mut s: Stack<u64, 4> = Stack::new();
     s.push(1);
     let _ = s[5];
+}
+
+#[test]
+fn get_mut_changes_element() {
+    let mut s: Stack<u64, 4> = Stack::new();
+    s.push(10);
+    s.push(20);
+    *s.get_mut(1).unwrap() = 77;
+    assert_eq!(Some(&77), s.get(1));
+}
+
+#[test]
+fn get_mut_returns_none_out_of_range() {
+    let mut s: Stack<u64, 4> = Stack::new();
+    s.push(7);
+    assert_eq!(None, s.get_mut(1));
 }
