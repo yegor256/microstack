@@ -35,7 +35,7 @@ impl<V: Copy, const N: usize> Stack<V, N> {
     /// Get the capacity.
     #[inline]
     #[must_use]
-    pub fn capacity(&mut self) -> usize {
+    pub const fn capacity(&self) -> usize {
         N
     }
 
@@ -198,8 +198,14 @@ fn pop_none() {
 }
 
 #[test]
+fn reads_capacity_through_shared_borrow() {
+    let s: Stack<u64, 3> = Stack::new();
+    assert_eq!(3, s.capacity());
+}
+
+#[test]
 fn read_capacity() {
-    let mut s: Stack<u64, 1> = Stack::new();
+    let s: Stack<u64, 1> = Stack::new();
     assert_eq!(1, s.capacity());
 }
 
