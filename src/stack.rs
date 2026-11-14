@@ -22,12 +22,16 @@ use crate::Stack;
 
 impl<V: Copy, const N: usize> Stack<V, N> {
     /// Make it from vector.
+    ///
+    /// # Panics
+    ///
+    /// If the vector is longer than the capacity of the stack, it will panic.
     #[inline]
     #[must_use]
     pub fn from_vec(v: Vec<V>) -> Self {
         let mut p = Self::new();
         for i in v {
-            unsafe { p.push_unchecked(i) };
+            p.push(i);
         }
         p
     }
@@ -187,6 +191,12 @@ fn push_after_clear() {
 fn build_from_vec() {
     let mut s: Stack<u64, 1> = Stack::from_vec(vec![42]);
     assert_eq!(42, s.pop());
+}
+
+#[test]
+#[should_panic(expected = "No more space left in the stack")]
+fn panic_on_from_vec_overflow() {
+    let _: Stack<u64, 1> = Stack::from_vec(vec![1, 2, 3]);
 }
 
 #[test]
