@@ -14,9 +14,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 25
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
+          components: clippy, rustfmt
       - run: cargo --color=never test --all-features -vv -- --nocapture
       - run: cargo --color=never test --release --all-features -vv -- --nocapture
       - run: cargo --color=never fmt --check
